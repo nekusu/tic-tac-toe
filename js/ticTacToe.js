@@ -1,4 +1,5 @@
 const tiles = board.querySelectorAll('.tile');
+const restartButton = restart;
 
 const Player = (marker) => {
 	function getMarker() {
@@ -10,6 +11,7 @@ const Player = (marker) => {
 
 const boardController = (() => {
 	const markers = { x: 'close', o: 'circle' };
+	let restartRotation = 0;
 
 	function addMarker(index, marker) {
 		tiles[index].firstElementChild.textContent = markers[marker];
@@ -22,11 +24,22 @@ const boardController = (() => {
 		}
 	}
 
-	return { addMarker, showWinTiles };
+	function clear() {
+		restartRotation -= 360;
+		restartButton.firstElementChild.style.transform = `rotateZ(${restartRotation}deg)`;
+		for (let tile of tiles) {
+			tile.classList.remove('marked', 'win');
+			if (tile.firstElementChild.textContent) {
+				tile.addEventListener('transitionend', () => tile.firstElementChild.textContent = '', { once: true });
+			}
+		}
+	}
+
+	return { addMarker, showWinTiles, clear };
 })();
 
 const gameController = (() => {
-	const board = ['', '', '', '', '', '', '', '', ''];
+	let board = ['', '', '', '', '', '', '', '', ''];
 	const winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
 	const playerOne = Player('x');
 	const playerTwo = Player('o');
@@ -59,7 +72,17 @@ const gameController = (() => {
 		}
 	}
 
-	return { addMarker };
+	function restart() {
+		board = ['', '', '', '', '', '', '', '', ''];
+		boardController.clear();
+		if (gameFinished) {
+			gameFinished = false;
+			switchPlayer();
+		}
+	}
+
+	return { addMarker, restart };
 })();
 
 tiles.forEach((tile, index) => tile.addEventListener('click', gameController.addMarker.bind(tile, index)));
+restartButton.addEventListener('click', gameController.restart);

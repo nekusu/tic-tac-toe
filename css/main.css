@@ -21,7 +21,13 @@
 	--radius: 30px;
 	--close-shadow: 0 2px 6px rgba(0, 0, 0, var(--lightest)), 0 8px 14px rgba(0, 0, 0, var(--light));
 	--distant-shadow: 0 2px 6px rgba(0, 0, 0, var(--dark)), 0 12px 20px rgba(0, 0, 0, var(--darkest));
-	--transition: background-color 0.25s, box-shadow 0.25s, transform 0.2s;
+	--transition: background-color 0.25s, box-shadow 0.25s, transform 0.2s, opacity 0.25s;
+}
+
+.box {
+	border-radius: var(--radius);
+	box-shadow: var(--close-shadow);
+	transition: var(--transition);
 }
 
 header {
@@ -30,7 +36,6 @@ header {
 	font-size: min(34px, 7vw);
 	text-align: center;
 	color: var(--text-alt);
-	border-radius: var(--radius);
 	background-color: var(--hover);
 	box-shadow: var(--distant-shadow);
 }
@@ -40,6 +45,14 @@ body {
 	flex-direction: column;
 	align-items: center;
 	background-color: var(--bg);
+}
+
+button {
+	cursor: pointer;
+}
+
+span {
+	pointer-events: none;
 }
 
 #board {
@@ -74,7 +87,7 @@ body {
 .tile span {
 	user-select: none;
 	font-size: min(100px, 20vw);
-	transform: scale(0);
+	transform: scale(0.5);
 	opacity: 0;
 	transition: var(--transition);
 }
@@ -94,4 +107,28 @@ body {
 	background-color: var(--hover);
 	box-shadow: var(--distant-shadow);
 	transform: scale(1.05);
+}
+
+#restart {
+	margin: 25px 10px;
+	padding: 12px 24px;
+	font-size: 23px;
+	font-weight: 600;
+	color: var(--text);
+	background-color: var(--bg-alt);
+}
+
+#restart span {
+	font-size: 25px;
+	vertical-align: sub;
+	transition: transform 0.35s;
+}
+
+#restart:hover {
+	background-color: rgb(50, 85, 85);
+	box-shadow: var(--distant-shadow);
+}
+
+#restart:active {
+	transform: scale(0.85);
 }
