@@ -1,16 +1,19 @@
+const playersBoxes = players.querySelectorAll('.player');
+const menuContainer = document.querySelector('#menu-container');
+const inputName = document.querySelector('#name');
+const nameForm = document.forms['edit-name'];
 const tiles = board.querySelectorAll('.tile');
 const restartButton = restart;
 
-const Player = (marker) => {
+const Player = (name, type, marker) => {
 	function getMarker() {
 		return marker;
 	}
 
-	return { getMarker };
+	return { name, type, getMarker };
 };
 
 const boardController = (() => {
-	const playersBoxes = players.querySelectorAll('.player');
 	const markers = { x: 'close', o: 'circle' };
 	let restartRotation = 0;
 
@@ -21,6 +24,27 @@ const boardController = (() => {
 			} else {
 				box.classList.remove('active');
 			}
+		}
+	}
+
+	function showMenu(index) {
+		menuContainer.classList.remove('hidden');
+		menuContainer.dataset.id = index;
+		inputName.value = gameController.getPlayerName(index);
+		inputName.focus();
+	}
+
+	function saveName() {
+		if (inputName.checkValidity()) {
+			gameController.setPlayerName(menuContainer.dataset.id, inputName.value);
+			playersBoxes[menuContainer.dataset.id].firstChild.textContent = inputName.value;
+		}
+	}
+
+	function closeMenu(e) {
+		e.preventDefault();
+		if ((e.target === menuContainer.firstElementChild || e.target === nameForm) && nameForm.reportValidity()) {
+			menuContainer.classList.add('hidden');
 		}
 	}
 
@@ -53,15 +77,23 @@ const boardController = (() => {
 		}
 	}
 
-	return { activePlayer, addMarker, showWinTiles, showWinner, clear };
+	return { activePlayer, showMenu, saveName, closeMenu, addMarker, showWinTiles, showWinner, clear };
 })();
 
 const gameController = (() => {
 	let board = ['', '', '', '', '', '', '', '', ''];
 	const winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-	const players = [Player('x'), Player('o')];
+	const players = [Player('Player One', 'human', 'x'), Player('Player Two', 'human', 'o')];
 	let currentPlayer = 0;
 	let gameFinished = false;
+
+	function getPlayerName(index) {
+		return players[index].name;
+	}
+
+	function setPlayerName(index, name) {
+		players[index].name = name;
+	}
 
 	function switchPlayer() {
 		currentPlayer = currentPlayer === 0 ? 1 : 0;
@@ -75,6 +107,7 @@ const gameController = (() => {
 				gameFinished = true;
 				boardController.showWinTiles(combo);
 				boardController.showWinner(currentPlayer);
+				break;
 			}
 		}
 		if (board.every(marker => marker)) {
@@ -103,8 +136,12 @@ const gameController = (() => {
 		}
 	}
 
-	return { addMarker, restart };
+	return { getPlayerName, setPlayerName, addMarker, restart };
 })();
 
+playersBoxes.forEach((box, index) => box.addEventListener('click', boardController.showMenu.bind(box, index)));
+inputName.addEventListener('input', boardController.saveName);
+nameForm.addEventListener('submit', boardController.closeMenu);
+menuContainer.addEventListener('click', boardController.closeMenu);
 tiles.forEach((tile, index) => tile.addEventListener('click', gameController.addMarker.bind(tile, index)));
 restartButton.addEventListener('click', gameController.restart);

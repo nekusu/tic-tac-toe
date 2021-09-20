@@ -18,11 +18,22 @@
 		<h1>Tic Tac Toe</h1>
 	</header>
 	<div id="players">
-		<div class="player box active" id="player-one">Player One
+		<button class="player box active" id="player-one" title="Click to see the player settings">Player One
 			<span class="material-icons-outlined box">emoji_events</span>
-		</div>
-		<div class="player box" id="player-two">Player Two
+		</button>
+		<button class="player box" id="player-two" title="Click to see the player settings">Player Two
 			<span class="material-icons-outlined box">emoji_events</span>
+		</button>
+		<div class="hidden" id="menu-container">
+			<div id="player-menu">
+				<form id="edit-name">
+					<input class="box" id="name" type="text" placeholder="Enter name" autocomplete="off" minlength="3"
+						maxlength="18" required>
+				</form>
+				<button class="box" id="switch-ai">Switch to AI
+					<span class="material-icons-outlined">autorenew</span>
+				</button>
+			</div>
 		</div>
 	</div>
 	<div id="board">

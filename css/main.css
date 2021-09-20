@@ -7,6 +7,7 @@
 }
 
 :root {
+	--accent: rgb(50, 85, 85);
 	--win: rgb(0, 128, 100);
 	--bg: rgb(30, 31, 35);
 	--bg-alt: rgb(39, 40, 44);
@@ -21,7 +22,7 @@
 	--radius: 30px;
 	--close-shadow: 0 2px 6px rgba(0, 0, 0, var(--lightest)), 0 8px 14px rgba(0, 0, 0, var(--light));
 	--distant-shadow: 0 2px 6px rgba(0, 0, 0, var(--dark)), 0 12px 20px rgba(0, 0, 0, var(--darkest));
-	--transition: background-color 0.25s, box-shadow 0.25s, transform 0.2s, opacity 0.25s;
+	--transition: background-color 0.25s, box-shadow 0.25s, border-color 0.25s, transform 0.2s, opacity 0.25s;
 }
 
 .box {
@@ -49,6 +50,10 @@ body {
 
 button {
 	cursor: pointer;
+}
+
+button:active {
+	transform: scale(0.85);
 }
 
 span {
@@ -81,6 +86,10 @@ span {
 	transform: scale(1.25);
 }
 
+.player.active:active {
+	transform: scale(1.1);
+}
+
 #player-one.active {
 	background-color: rgb(179, 40, 70);
 }
@@ -105,6 +114,76 @@ span {
 .player.winner span {
 	transform: scale(1);
 	opacity: 1;
+}
+
+#menu-container {
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	z-index: 10;
+	top: 0;
+	background-color: rgba(0, 0, 0, 0.35);
+	transition: var(--transition);
+}
+
+#menu-container.hidden {
+	pointer-events: none;
+	opacity: 0;
+}
+
+#menu-container.hidden #player-menu {
+	transform: scale(0.8);
+}
+
+#player-menu {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	transition: var(--transition);
+}
+
+#player-menu *:not(form):not(span) {
+	margin: 10px 5px;
+	color: var(--text);
+	background-color: var(--bg-alt);
+	box-shadow: var(--distant-shadow);
+}
+
+#player-menu input {
+	padding: 10px 20px;
+	width: 230px;
+	box-sizing: border-box;
+	font-size: 24px;
+	font-weight: 600;
+	text-align: center;
+	color: var(--text-alt);
+	border: 2px solid transparent;
+}
+
+#player-menu input:hover {
+	background-color: var(--hover);
+}
+
+#player-menu input:focus {
+	color: var(--text);
+	background-color: var(--hover);
+	border-color: var(--accent);
+}
+
+#player-menu > button {
+	padding: 10px 20px;
+	font-size: 20px;
+}
+
+#player-menu > button span {
+	font-size: 22px;
+	vertical-align: sub;
+}
+
+#player-menu button:hover {
+	background-color: var(--accent);
 }
 
 #board {
@@ -177,10 +256,6 @@ span {
 }
 
 #restart:hover {
-	background-color: rgb(50, 85, 85);
+	background-color: var(--accent);
 	box-shadow: var(--distant-shadow);
-}
-
-#restart:active {
-	transform: scale(0.85);
 }
