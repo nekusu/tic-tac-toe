@@ -10,8 +10,19 @@ const Player = (marker) => {
 };
 
 const boardController = (() => {
+	const playersBoxes = players.querySelectorAll('.player');
 	const markers = { x: 'close', o: 'circle' };
 	let restartRotation = 0;
+
+	function activePlayer(index) {
+		for (const box of playersBoxes) {
+			if (box === playersBoxes[index]) {
+				box.classList.add('active');
+			} else {
+				box.classList.remove('active');
+			}
+		}
+	}
 
 	function addMarker(index, marker) {
 		tiles[index].firstElementChild.textContent = markers[marker];
@@ -24,30 +35,37 @@ const boardController = (() => {
 		}
 	}
 
+	function showWinner(index) {
+		playersBoxes[index].classList.add('winner');
+	}
+
 	function clear() {
 		restartRotation -= 360;
 		restartButton.firstElementChild.style.transform = `rotateZ(${restartRotation}deg)`;
-		for (let tile of tiles) {
+		for (const tile of tiles) {
 			tile.classList.remove('marked', 'win');
 			if (tile.firstElementChild.textContent) {
 				tile.addEventListener('transitionend', () => tile.firstElementChild.textContent = '', { once: true });
 			}
 		}
+		for (const box of playersBoxes) {
+			box.classList.remove('winner');
+		}
 	}
 
-	return { addMarker, showWinTiles, clear };
+	return { activePlayer, addMarker, showWinTiles, showWinner, clear };
 })();
 
 const gameController = (() => {
 	let board = ['', '', '', '', '', '', '', '', ''];
 	const winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-	const playerOne = Player('x');
-	const playerTwo = Player('o');
-	let currentPlayer = playerOne;
+	const players = [Player('x'), Player('o')];
+	let currentPlayer = 0;
 	let gameFinished = false;
 
 	function switchPlayer() {
-		currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
+		currentPlayer = currentPlayer === 0 ? 1 : 0;
+		boardController.activePlayer(currentPlayer);
 	}
 
 	function checkWinner() {
@@ -56,17 +74,21 @@ const gameController = (() => {
 			if (a && b && c && a === b && b === c) {
 				gameFinished = true;
 				boardController.showWinTiles(combo);
-				return true;
+				boardController.showWinner(currentPlayer);
 			}
 		}
-		return false;
+		if (board.every(marker => marker)) {
+			gameFinished = true;
+		}
 	}
 
 	function addMarker(index) {
 		if (!board[index] && !gameFinished) {
-			board[index] = currentPlayer.getMarker();
-			boardController.addMarker(index, currentPlayer.getMarker());
-			if (!checkWinner()) {
+			playerMarker = players[currentPlayer].getMarker();
+			board[index] = playerMarker;
+			boardController.addMarker(index, playerMarker);
+			checkWinner();
+			if (!gameFinished) {
 				switchPlayer();
 			}
 		}

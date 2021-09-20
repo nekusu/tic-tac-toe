@@ -31,7 +31,7 @@
 }
 
 header {
-	margin: 45px 10px;
+	margin: 45px 10px 10px;
 	padding: 15px 30px;
 	font-size: min(34px, 7vw);
 	text-align: center;
@@ -55,8 +55,60 @@ span {
 	pointer-events: none;
 }
 
+#players {
+	margin: 25px 0;
+	width: 95vw;
+	max-width: 470px;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	text-align: center;
+}
+
+.player {
+	margin: 10px 20px;
+	padding: 10px 20px;
+	position: relative;
+	font-size: 22px;
+	color: var(--text-alt);
+	background-color: var(--bg-alt2);
+}
+
+.player.active {
+	font-weight: 600;
+	color: var(--text);
+	box-shadow: var(--distant-shadow);
+	transform: scale(1.25);
+}
+
+#player-one.active {
+	background-color: rgb(179, 40, 70);
+}
+
+#player-two.active {
+	background-color: rgb(65, 40, 179);
+}
+
+.player span {
+	padding: 5px;
+	position: absolute;
+	top: -14px;
+	right: -14px;
+	color: rgb(230, 190, 0);
+	background-color: rgb(50, 50, 35);
+	box-shadow: var(--distant-shadow);
+	transform: scale(0);
+	opacity: 0;
+	transition: opacity 0.25s, transform 0.5s cubic-bezier(0.15, 0.885, 0.2, 1.5);
+}
+
+.player.winner span {
+	transform: scale(1);
+	opacity: 1;
+}
+
 #board {
-	margin: 15px;
+	margin: 0 10px;
 	height: 90vw;
 	max-height: 420px;
 	width: 90vw;
@@ -110,7 +162,7 @@ span {
 }
 
 #restart {
-	margin: 25px 10px;
+	margin: 35px 10px;
 	padding: 12px 24px;
 	font-size: 23px;
 	font-weight: 600;
