@@ -7,8 +7,10 @@
 }
 
 :root {
+	--win: rgb(0, 128, 100);
 	--bg: rgb(30, 31, 35);
 	--bg-alt: rgb(39, 40, 44);
+	--bg-alt2: rgb(36, 37, 41);
 	--hover: rgb(44, 45, 49);
 	--text: rgb(240, 240, 240);
 	--text-alt: rgb(170, 170, 170);
@@ -63,11 +65,32 @@ body {
 	transition: var(--transition);
 }
 
-.tile span {
-	font-size: min(100px, 20vw);
+.tile.marked {
+	cursor: not-allowed;
+	background-color: var(--bg-alt2);
+	transform: scale(0.975);
 }
 
-.tile:hover {
+.tile span {
+	user-select: none;
+	font-size: min(100px, 20vw);
+	transform: scale(0);
+	opacity: 0;
+	transition: var(--transition);
+}
+
+.tile.marked span {
+	transform: scale(1);
+	opacity: 1;
+}
+
+.tile.win {
+	background-color: var(--win);
+	box-shadow: var(--distant-shadow);
+	transform: scale(1.1);
+}
+
+.tile:not(.marked):not(.win):hover {
 	background-color: var(--hover);
 	box-shadow: var(--distant-shadow);
 	transform: scale(1.05);
