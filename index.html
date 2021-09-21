@@ -18,11 +18,13 @@
 		<h1>Tic Tac Toe</h1>
 	</header>
 	<div id="players">
-		<button class="player box active" id="player-one" title="Click to see the player settings">Player One
-			<span class="material-icons-outlined box">emoji_events</span>
+		<button class="player box human active" id="player-one" title="Click to see the player settings">Player One
+			<span class="winner-icon material-icons-outlined box">emoji_events</span>
+			<span class="ai-icon box">AI</span>
 		</button>
-		<button class="player box" id="player-two" title="Click to see the player settings">Player Two
-			<span class="material-icons-outlined box">emoji_events</span>
+		<button class="player box human" id="player-two" title="Click to see the player settings">Player Two
+			<span class="winner-icon material-icons-outlined box">emoji_events</span>
+			<span class="ai-icon box">AI</span>
 		</button>
 		<div class="hidden" id="menu-container">
 			<div id="player-menu">
@@ -30,7 +32,7 @@
 					<input class="box" id="name" type="text" placeholder="Enter name" autocomplete="off" minlength="3"
 						maxlength="18" required>
 				</form>
-				<button class="box" id="switch-ai">Switch to AI
+				<button class="box" id="switch-ai">Switch to <span>AI</span>
 					<span class="material-icons-outlined">autorenew</span>
 				</button>
 			</div>

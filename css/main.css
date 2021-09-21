@@ -99,19 +99,36 @@ span {
 }
 
 .player span {
-	padding: 5px;
 	position: absolute;
 	top: -14px;
-	right: -14px;
-	color: rgb(230, 190, 0);
-	background-color: rgb(50, 50, 35);
 	box-shadow: var(--distant-shadow);
 	transform: scale(0);
 	opacity: 0;
 	transition: opacity 0.25s, transform 0.5s cubic-bezier(0.15, 0.885, 0.2, 1.5);
 }
 
-.player.winner span {
+.player .winner-icon {
+	padding: 5px;
+	right: -14px;
+	color: rgb(230, 190, 0);
+	background-color: rgb(50, 50, 35);
+}
+
+.player .ai-icon {
+	padding: 7px;
+	left: -14px;
+	font-size: 17px;
+	font-weight: 600;
+	color: rgb(0, 100, 230);
+	background-color: rgb(35, 40, 50);
+}
+
+.player.winner .winner-icon {
+	transform: scale(1);
+	opacity: 1;
+}
+
+.player.ai .ai-icon {
 	transform: scale(1);
 	opacity: 1;
 }
@@ -177,7 +194,7 @@ span {
 	font-size: 20px;
 }
 
-#player-menu > button span {
+#player-menu > button .material-icons-outlined {
 	font-size: 22px;
 	vertical-align: sub;
 }
