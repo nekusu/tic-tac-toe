@@ -31,8 +31,12 @@
 	transition: var(--transition);
 }
 
+.box:hover {
+	box-shadow: var(--distant-shadow);
+}
+
 header {
-	margin: 45px 10px 10px;
+	margin: min(40px, 5vw) 10px 10px;
 	padding: 15px 30px;
 	font-size: min(34px, 7vw);
 	text-align: center;
@@ -42,8 +46,10 @@ header {
 }
 
 body {
+	min-height: 100vh;
 	display: flex;
 	flex-direction: column;
+	justify-content: space-between;
 	align-items: center;
 	background-color: var(--bg);
 }
@@ -61,7 +67,7 @@ span {
 }
 
 #players {
-	margin: 25px 0;
+	margin: min(25px, 2.5vw) 0;
 	width: 95vw;
 	max-width: 470px;
 	display: flex;
@@ -258,7 +264,7 @@ span {
 }
 
 #restart {
-	margin: 35px 10px;
+	margin: min(35px, 5vw) 10px;
 	padding: 12px 24px;
 	font-size: 23px;
 	font-weight: 600;
@@ -274,5 +280,29 @@ span {
 
 #restart:hover {
 	background-color: var(--accent);
-	box-shadow: var(--distant-shadow);
+}
+
+#github {
+	margin-bottom: 25px;
+	padding: 10px 20px;
+	display: inline-block;
+	font-size: 20px;
+	text-align: center;
+	text-decoration: none;
+	color: var(--text);
+	background-color: var(--hover);
+	transition: var(--transition);
+}
+
+#github img {
+	height: 25px;
+	margin-left: 10px;
+	position: relative;
+	top: -1px;
+	vertical-align: middle;
+	filter: invert(.95);
+}
+
+#github:hover {
+	transform: scale(1.1);
 }
