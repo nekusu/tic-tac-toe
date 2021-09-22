@@ -58,6 +58,7 @@ const boardController = (() => {
 		e.preventDefault();
 		if ((e.target === menuContainer.firstElementChild || e.target === nameForm) && nameForm.reportValidity()) {
 			menuContainer.classList.add('hidden');
+			gameController.playBot();
 		}
 	}
 
@@ -100,6 +101,8 @@ const gameController = (() => {
 	let currentPlayer = 0;
 	let botIsPlaying = false;
 	let gameFinished = false;
+	let botTimeout;
+	let restartTimeout;
 
 	function getPlayerInfo(index, key) {
 		return players[index][key];
@@ -112,10 +115,7 @@ const gameController = (() => {
 	function switchPlayer() {
 		currentPlayer = currentPlayer === 0 ? 1 : 0;
 		boardController.activePlayer(currentPlayer);
-		if (players[currentPlayer].type === 'ai') {
-			botIsPlaying = true;
-			setTimeout(() => addMarker(findBestMove(players[currentPlayer])), 500);
-		}
+		playBot();
 	}
 
 	function checkWinner() {
@@ -178,6 +178,13 @@ const gameController = (() => {
 		return bestMove;
 	}
 
+	function playBot() {
+		if (!gameFinished && !botIsPlaying && players[currentPlayer].type === 'ai') {
+			botIsPlaying = true;
+			botTimeout = setTimeout(() => addMarker(findBestMove(players[currentPlayer])), 500);
+		}
+	}
+
 	function finishGame(winner) {
 		if (winner.result) {
 			gameFinished = true;
@@ -186,7 +193,7 @@ const gameController = (() => {
 				boardController.showWinner(currentPlayer);
 			}
 			if (players.every(player => player.type === 'ai')) {
-				setTimeout(() => restartButton.click(), 1500);
+				restartTimeout = setTimeout(restart, 1000);
 			}
 		} else {
 			switchPlayer();
@@ -203,15 +210,20 @@ const gameController = (() => {
 	}
 
 	function restart() {
+		clearTimeout(botTimeout);
+		clearTimeout(restartTimeout);
 		board = ['', '', '', '', '', '', '', '', ''];
 		boardController.clear();
+		botIsPlaying = false;
 		if (gameFinished) {
 			gameFinished = false;
 			switchPlayer();
+		} else {
+			playBot();
 		}
 	}
 
-	return { getPlayerInfo, setPlayerInfo, addMarker, restart };
+	return { getPlayerInfo, setPlayerInfo, playBot, addMarker, restart };
 })();
 
 playersBoxes.forEach((box, index) => box.addEventListener('click', boardController.showMenu.bind(box, index)));
