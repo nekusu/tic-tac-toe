@@ -96,7 +96,7 @@ const boardController = (() => {
 const gameController = (() => {
 	let board = ['', '', '', '', '', '', '', '', ''];
 	const winCombos = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
-	const players = [Player('Player One', 'human', 'x'), Player('Player Two', 'human', 'o')];
+	const players = [Player('Player One', 'human', 'x'), Player('Player Two', 'ai', 'o')];
 	let currentPlayer = 0;
 	let botIsPlaying = false;
 	let gameFinished = false;
